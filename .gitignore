@@ -131,3 +131,5 @@ dmypy.json
 token.txt
 token.*
 test.py
+.idea/
+.idea
