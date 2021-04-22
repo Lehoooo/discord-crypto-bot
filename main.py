@@ -80,9 +80,6 @@ async def trending(ctx):
     firstcoin = trendingapi["coins"]["item"]
     print(firstcoin)
 
-@bot.command()
-async def help(ctx):
-    embed = discord.Embed(title="Crypto Bot Help")
-    embed.add_field(name="")
+
 
 bot.run(TOKEN)
