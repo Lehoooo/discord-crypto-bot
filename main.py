@@ -76,12 +76,5 @@ async def trending(ctx):
     firstcoin = trendingapi["coins"]["item"]
     print(firstcoin)
 
-@bot.command()
-async def leaveserver(ctx):
-    await ctx.send("Leaving Server. Goodbye!")
-    # to_leave = bot.get_guild(id)
-    await ctx.guild.leave()
-
-
 
 bot.run(TOKEN)
