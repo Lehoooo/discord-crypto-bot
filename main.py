@@ -1,3 +1,4 @@
+# Made By github.com/Lehoooo
 from pycoingecko import CoinGeckoAPI
 import discord
 from discord.ext import commands
