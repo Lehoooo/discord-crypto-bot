@@ -21,17 +21,21 @@ async def on_ready():
 
 
 @bot.command()
-async def price(ctx, arg):
-    await ctx.send('looking for crypto ' + str(arg) + '. Please wait.')
+async def price(ctx, arg, arg2):
 
-    coinsearch = cg.get_price(ids=arg, vs_currencies='usd')
-    usdprice = coinsearch[arg]["usd"]
+    # if not arg2:
+    #     print("No argument specified")
+    #     arg2 = "USD"
+
+    # await ctx.send('looking for crypto ' + str(arg) + '. Please wait.')
+
+    coinsearch = cg.get_price(ids=arg, vs_currencies=arg2)
+    usdprice = coinsearch[arg][str(arg2)]
 
     print("just looked for " + str(arg) + ". Got response " + str(usdprice) + " USD")
-    # await ctx.send("crypto " + str(arg) + " is currently at price " + str(usdprice) + " USD")
 
     embed = discord.Embed(title="CryptoBot")
-    embed.add_field(name=str(arg).capitalize(), value="$" + str(usdprice), inline=False)
+    embed.add_field(name=str(arg).capitalize() + " - " + str(arg2).upper(), value="$" + str(usdprice), inline=False)
     embed.set_footer(text="Made with ❤ by Leho")
     await ctx.send(embed=embed)
 
@@ -55,14 +59,14 @@ async def ping(ctx):
 
 @bot.command()
 async def gas(ctx):
-    gasprice = requests.get(" https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=ZEJC89JQVC5EXBSTDEFF4QTYJI3BTRR4Z8").json()
+    gasprice = requests.get("https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=ZEJC89JQVC5EXBSTDEFF4QTYJI3BTRR4Z8").json()
     highprice = gasprice["result"]["FastGasPrice"]
     mediumprice = gasprice["result"]["ProposeGasPrice"]
     lowprice = gasprice["result"]["SafeGasPrice"]
 
     print("Just searched for gas prices. Result was " + highprice + ", " + mediumprice + ", " + lowprice)
 
-    embed = discord.Embed(title="Etherium Gas Fee")
+    embed = discord.Embed(title="Etherium Gas Price")
     embed.add_field(name="High", value=str(highprice) + " GWEI", inline=False)
     embed.add_field(name="Medium", value=str(mediumprice) + " GWEI", inline=False)
     embed.add_field(name="Low", value=str(lowprice) + " GWEI", inline=False)
@@ -75,5 +79,10 @@ async def trending(ctx):
 
     firstcoin = trendingapi["coins"]["item"]
     print(firstcoin)
+
+@bot.command()
+async def help(ctx):
+    embed = discord.Embed(title="Crypto Bot Help")
+    embed.add_field(name="")
 
 bot.run(TOKEN)
