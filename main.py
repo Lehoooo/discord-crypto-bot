@@ -27,7 +27,7 @@ async def price(ctx, arg, arg2):
     #     print("No argument specified")
     #     arg2 = "USD"
 
-    # await ctx.send('looking for crypto ' + str(arg) + '. Please wait.')
+    await ctx.send('looking for crypto ' + str(arg) + '. Please wait.', delete_after=1)
 
     coinsearch = cg.get_price(ids=arg, vs_currencies=arg2)
     usdprice = coinsearch[arg][str(arg2)]
