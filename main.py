@@ -11,7 +11,7 @@ bot = commands.Bot(command_prefix='>')
 
 cg = CoinGeckoAPI()
 
-print("Starting Crypto Bot - Made By Leho")
+print("\n\n\n\nStarting Crypto Bot - Made By Leho\n\n\n\n")
 
 
 @bot.event
@@ -23,16 +23,12 @@ async def on_ready():
 @bot.command()
 async def price(ctx, arg, arg2):
 
-    # if not arg2:
-    #     print("No argument specified")
-    #     arg2 = "USD"
-
-    await ctx.send('looking for crypto ' + str(arg) + '. Please wait.', delete_after=1)
+    await ctx.send('Looking For Crypto ' + str(arg).capitalize() + '. Please Wait.', delete_after=1)
 
     coinsearch = cg.get_price(ids=arg, vs_currencies=arg2)
-    usdprice = coinsearch[arg][str(arg2)]
+    usdprice = coinsearch[str(arg).lower()][str(arg2).lower()]
 
-    print("just looked for " + str(arg) + ". Got response " + str(usdprice) + " USD")
+    print("Just Looked For " + str(arg) + ". Got response " + str(usdprice) + " USD")
 
     embed = discord.Embed(title="CryptoBot")
     embed.add_field(name=str(arg).capitalize() + " - " + str(arg2).upper(), value="$" + str(usdprice), inline=False)
