@@ -56,6 +56,7 @@ async def ping(ctx):
 
 @bot.command()
 async def gas(ctx):
+    await ctx.send("Getting Ethereum Gas Price. Please Wait.", delete_after=1)
     gasprice = requests.get("https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=" + etherscanapikey).json()
     highprice = gasprice["result"]["FastGasPrice"]
     mediumprice = gasprice["result"]["ProposeGasPrice"]
@@ -63,7 +64,7 @@ async def gas(ctx):
 
     print("Just searched for gas prices. Result was " + highprice + ", " + mediumprice + ", " + lowprice)
 
-    embed = discord.Embed(title="Etherium Gas Price")
+    embed = discord.Embed(title="Ethereum Gas Price")
     embed.add_field(name="High", value=str(highprice) + " GWEI", inline=False)
     embed.add_field(name="Medium", value=str(mediumprice) + " GWEI", inline=False)
     embed.add_field(name="Low", value=str(lowprice) + " GWEI", inline=False)
