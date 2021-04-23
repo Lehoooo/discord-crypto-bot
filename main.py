@@ -78,5 +78,19 @@ async def trending(ctx):
     firstcoin = trendingapi["coins"]["item"]
     print(firstcoin)
 
+@bot.command()
+async def info(ctx):
+    embed = discord.Embed(title="CryptoBot Info")
+    embed.add_field(name="", value="", inline=False)
+
+@bot.command()
+async def btcfee(ctx):
+    embed = discord.Embed(title="Bitcoin Fee")
+    btcfee_request = requests.get("https://bitcoinfees.earn.com/api/v1/fees/recommended").json()
+    embed.add_field(name="Fastest", value=str(btcfee_request["fastestFee"]), inline=False)
+    embed.add_field(name="Half Hour", value=str(btcfee_request["halfHourFee"]), inline=False)
+    embed.add_field(name="Hour", value=str(btcfee_request["hourFee"]), inline=False)
+    await ctx.send(embed=embed)
+
 
 bot.run(TOKEN)
