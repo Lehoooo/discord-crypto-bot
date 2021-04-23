@@ -6,6 +6,7 @@ import requests
 
 
 TOKEN = open("token.txt", "r").read()
+etherscanapikey = open("etherscantoken.txt", "r").read()
 
 bot = commands.Bot(command_prefix='>')
 
@@ -55,7 +56,7 @@ async def ping(ctx):
 
 @bot.command()
 async def gas(ctx):
-    gasprice = requests.get("https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=ZEJC89JQVC5EXBSTDEFF4QTYJI3BTRR4Z8").json()
+    gasprice = requests.get("https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=" + etherscanapikey).json()
     highprice = gasprice["result"]["FastGasPrice"]
     mediumprice = gasprice["result"]["ProposeGasPrice"]
     lowprice = gasprice["result"]["SafeGasPrice"]
