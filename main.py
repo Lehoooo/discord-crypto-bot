@@ -46,7 +46,6 @@ async def ping(ctx):
     if ping == "(V3) To the Moon!":
         answer = "UP"
 
-    # await ctx.send("Coingecko API Is " + answer) // send answer without embed
     print("Coingecko API Is " + answer + ". Response was: " + str(ping))
 
     embed = discord.Embed(title="Ping Test")
@@ -71,17 +70,24 @@ async def gas(ctx):
     embed.set_footer(text="Made with ❤ by Leho")
     await ctx.send(embed=embed)
 
-@bot.command()
-async def trending(ctx):
-    trendingapi = requests.get("http://api.coingecko.com/api/v3/search/trending").json()
+# @bot.command()
+# async def trending(ctx):
+#     trendingapi = requests.get("http://api.coingecko.com/api/v3/search/trending").json()
+#
+#     firstcoin = trendingapi["coins"]["item"]
+#     print(firstcoin)
 
-    firstcoin = trendingapi["coins"]["item"]
-    print(firstcoin)
-
 @bot.command()
-async def info(ctx):
-    embed = discord.Embed(title="CryptoBot Info")
-    embed.add_field(name="", value="", inline=False)
+async def info(ctx, arg):
+    embed = discord.Embed(title="Info For Wallet " + str(arg))
+    walletinfo = requests.get("https://blockchain.info/rawaddr/" + str(arg)).json()
+    embed.add_field(name="Number Of Transactions", value=str(walletinfo["n_tx"]), inline=False)
+    embed.add_field(name="Total Recieved", value=str(walletinfo["total_received"]), inline=False)
+    embed.add_field(name="Total Sent", value=str(walletinfo["total_sent"]), inline=False)
+    embed.add_field(name="Current Balance", value=str(walletinfo["final_balance"]), inline=False)
+    await ctx.send(embed=embed)
+
+
 
 @bot.command()
 async def btcfee(ctx):
