@@ -3,12 +3,15 @@ from pycoingecko import CoinGeckoAPI
 import discord
 from discord.ext import commands
 import requests
-
+from pretty_help import DefaultMenu, PrettyHelp
 
 TOKEN = open("token.txt", "r").read()
 etherscanapikey = open("etherscantoken.txt", "r").read()
 
+menu = DefaultMenu(page_left="⬅️", page_right="➡️", active_time=20)
+
 bot = commands.Bot(command_prefix='>')
+bot.help_command = PrettyHelp(menu=menu)
 
 cg = CoinGeckoAPI()
 
@@ -79,23 +82,26 @@ async def gas(ctx):
 
 @bot.command()
 async def info(ctx, arg):
+    await ctx.send("Please Wait, Getting Wallet Info", delete_after=1)
     embed = discord.Embed(title="Info For Wallet " + str(arg))
     walletinfo = requests.get("https://blockchain.info/rawaddr/" + str(arg)).json()
     embed.add_field(name="Number Of Transactions", value=str(walletinfo["n_tx"]), inline=False)
-    embed.add_field(name="Total Recieved", value=str(walletinfo["total_received"]), inline=False)
+    embed.add_field(name="Total Recieved", value=walletinfo["total_received"] / 100000000, inline=False)
     embed.add_field(name="Total Sent", value=str(walletinfo["total_sent"]), inline=False)
-    embed.add_field(name="Current Balance", value=str(walletinfo["final_balance"]), inline=False)
+    embed.add_field(name="Current Balance", value=walletinfo["final_balance"]/ 100000000, inline=False)
+    embed.set_footer(text="Made with ❤ by Leho")
     await ctx.send(embed=embed)
 
 
 
 @bot.command()
-async def btcfee(ctx):
+async def btcfee(ctx): # Check btc price
     embed = discord.Embed(title="Bitcoin Fee")
     btcfee_request = requests.get("https://bitcoinfees.earn.com/api/v1/fees/recommended").json()
     embed.add_field(name="Fastest", value=str(btcfee_request["fastestFee"]), inline=False)
     embed.add_field(name="Half Hour", value=str(btcfee_request["halfHourFee"]), inline=False)
     embed.add_field(name="Hour", value=str(btcfee_request["hourFee"]), inline=False)
+    embed.set_footer(text="Made with ❤ by Leho")
     await ctx.send(embed=embed)
 
 
