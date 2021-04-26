@@ -57,13 +57,12 @@ async def ping(ctx):
 @bot.command()
 async def gas(ctx):
     await ctx.send("Getting Ethereum Gas Price. Please Wait.", delete_after=1)
-    gasprice = requests.get(
-        "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=" + etherscanapikey).json()
-    highprice = gasprice["result"]["FastGasPrice"]
-    mediumprice = gasprice["result"]["ProposeGasPrice"]
-    lowprice = gasprice["result"]["SafeGasPrice"]
+    gasprice = requests.get("https://api.blockcypher.com/v1/eth/main").json()
+    highprice = gasprice["high_gas_price"] / 1000000000
+    mediumprice = gasprice["medium_gas_price"] / 1000000000
+    lowprice = gasprice["low_gas_price"] / 1000000000
 
-    print("Just searched for gas prices. Result was " + highprice + ", " + mediumprice + ", " + lowprice)
+    print("Just searched for gas prices. Result was " + str(highprice) + ", " + str(mediumprice) + ", " + str(lowprice))
 
     embed = discord.Embed(title="Ethereum Gas Price")
     embed.add_field(name="High", value=str(highprice) + " GWEI", inline=False)
@@ -71,26 +70,6 @@ async def gas(ctx):
     embed.add_field(name="Low", value=str(lowprice) + " GWEI", inline=False)
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
-
-
-# @bot.command()
-# async def trending(ctx):
-#     trendingapi = requests.get("http://api.coingecko.com/api/v3/search/trending").json()
-#
-#     firstcoin = trendingapi["coins"]["item"]
-#     print(firstcoin)
-
-# @bot.command()
-# async def btcwallet(ctx, arg):
-#     await ctx.send("Please Wait, Getting Wallet Info", delete_after=1)
-#     embed = discord.Embed(title="Info For Wallet " + str(arg))
-#     walletinfo = requests.get("https://blockchain.info/rawaddr/" + str(arg)).json()
-#     embed.add_field(name="Number Of Transactions", value=str(walletinfo["n_tx"]), inline=False)
-#     embed.add_field(name="Total Recieved", value=walletinfo["total_received"] / 100000000, inline=False)
-#     embed.add_field(name="Total Sent", value=str(walletinfo["total_sent"]), inline=False)
-#     embed.add_field(name="Current Balance", value=walletinfo["final_balance"] / 100000000, inline=False)
-#         embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
-#     await ctx.send(embed=embed)
 
 
 @bot.command()
