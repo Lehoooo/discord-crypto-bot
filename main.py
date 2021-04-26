@@ -3,17 +3,16 @@ from pycoingecko import CoinGeckoAPI
 import discord
 from discord.ext import commands
 import requests
-from pretty_help import DefaultMenu, PrettyHelp
 
 TOKEN = open("token.txt", "r").read()
 etherscanapikey = open("etherscantoken.txt", "r").read()
 
-menu = DefaultMenu(page_left="⬅️", page_right="➡️", active_time=20)
 
 bot = commands.Bot(command_prefix='>')
-bot.help_command = PrettyHelp(menu=menu)
 
 cg = CoinGeckoAPI()
+
+bot.remove_command('help')
 
 print("\n\n\n\nStarting Crypto Bot - Made By Leho\n\n\n\n")
 
@@ -81,7 +80,7 @@ async def gas(ctx):
 #     print(firstcoin)
 
 @bot.command()
-async def info(ctx, arg):
+async def btcwallet(ctx, arg):
     await ctx.send("Please Wait, Getting Wallet Info", delete_after=1)
     embed = discord.Embed(title="Info For Wallet " + str(arg))
     walletinfo = requests.get("https://blockchain.info/rawaddr/" + str(arg)).json()
@@ -103,6 +102,34 @@ async def btcfee(ctx): # Check btc price
     embed.add_field(name="Hour", value=str(btcfee_request["hourFee"]), inline=False)
     embed.set_footer(text="Made with ❤ by Leho")
     await ctx.send(embed=embed)
+
+@bot.command()
+async def help(ctx):
+    embed = discord.Embed(title="CryptoBot Help")
+    embed.add_field(name="Price - Checks A Cryptocurrency Price", value="```>price <coin> <currency>```", inline=False) # price command
+    embed.add_field(name="Ping - Checks if the coingecko API is responding", value="```>ping```", inline=False) # ping command
+    embed.add_field(name="Gas - Checks the current Ethereum gas price", value="```>gas```", inline=False) # gas command
+    embed.add_field(name="Btcwallet - Shows you info about a Bitcoin wallet", value="```>btcwallet <btc wallet address>```", inline=False)
+    embed.set_footer(text="Made with ❤ by Leho")
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def ltcfee(ctx):
+    await ctx.send("Getting Litecoin Fee, Please Wait.", delete_after=1)
+    embed = discord.Embed(title="Litecoin Sending Fee")
+    ltcfeereq = requests.get("https://api.blockcypher.com/v1/ltc/main").json()
+
+    highfee = ltcfeereq["high_fee_per_kb"]
+    mediumfee = ltcfeereq["medium_fee_per_kb"]
+    lowfee = ltcfeereq["low_fee_per_kb"]
+
+    embed.add_field(name="High", value="```" + str(highfee / 100000000) + " LTC/KB" + "```", inline=False)
+    embed.add_field(name="Medium", value=str(mediumfee / 100000000) + " LTC/KB", inline=False)
+    embed.add_field(name="Low", value=str(lowfee / 100000000) + " LTC/KB", inline=False)
+    await ctx.send(embed=embed)
+
+
+
 
 
 bot.run(TOKEN)
