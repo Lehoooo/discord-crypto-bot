@@ -7,7 +7,6 @@ import requests
 TOKEN = open("token.txt", "r").read()
 etherscanapikey = open("etherscantoken.txt", "r").read()
 
-
 bot = commands.Bot(command_prefix='>')
 
 cg = CoinGeckoAPI()
@@ -25,7 +24,6 @@ async def on_ready():
 
 @bot.command()
 async def price(ctx, arg, arg2):
-
     await ctx.send('Looking For Crypto ' + str(arg).capitalize() + '. Please Wait.', delete_after=1)
 
     coinsearch = cg.get_price(ids=arg, vs_currencies=arg2)
@@ -33,9 +31,9 @@ async def price(ctx, arg, arg2):
 
     print("Just Looked For " + str(arg) + ". Got response " + str(usdprice) + " USD")
 
-    embed = discord.Embed(title="CryptoBot")
-    embed.add_field(name=str(arg).capitalize() + " - " + str(arg2).upper(), value="$" + str(usdprice), inline=False)
-    embed.set_footer(text="Made with ❤ by Leho")
+    embed = discord.Embed(title=str(arg).capitalize() + " - " + str(arg2).upper())
+    embed.add_field(name="Price:", value="```" + "$" + str(usdprice) + " " + str(arg2).upper() + "```", inline=False)
+    embed.set_footer(text="CryptoBot | Made with ❤ by Leho")
     await ctx.send(embed=embed)
 
 
@@ -52,13 +50,15 @@ async def ping(ctx):
 
     embed = discord.Embed(title="Ping Test")
     embed.add_field(name="CoinGecko", value="API Is " + str(answer), inline=False)
-    embed.set_footer(text="Made with ❤ by Leho")
+    embed.set_footer(text="CryptoBot | Made with ❤ by Leho")
     await ctx.send(embed=embed)
+
 
 @bot.command()
 async def gas(ctx):
     await ctx.send("Getting Ethereum Gas Price. Please Wait.", delete_after=1)
-    gasprice = requests.get("https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=" + etherscanapikey).json()
+    gasprice = requests.get(
+        "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=" + etherscanapikey).json()
     highprice = gasprice["result"]["FastGasPrice"]
     mediumprice = gasprice["result"]["ProposeGasPrice"]
     lowprice = gasprice["result"]["SafeGasPrice"]
@@ -69,8 +69,9 @@ async def gas(ctx):
     embed.add_field(name="High", value=str(highprice) + " GWEI", inline=False)
     embed.add_field(name="Medium", value=str(mediumprice) + " GWEI", inline=False)
     embed.add_field(name="Low", value=str(lowprice) + " GWEI", inline=False)
-    embed.set_footer(text="Made with ❤ by Leho")
+    embed.set_footer(text="CryptoBot | Made with ❤ by Leho")
     await ctx.send(embed=embed)
+
 
 # @bot.command()
 # async def trending(ctx):
@@ -87,31 +88,35 @@ async def btcwallet(ctx, arg):
     embed.add_field(name="Number Of Transactions", value=str(walletinfo["n_tx"]), inline=False)
     embed.add_field(name="Total Recieved", value=walletinfo["total_received"] / 100000000, inline=False)
     embed.add_field(name="Total Sent", value=str(walletinfo["total_sent"]), inline=False)
-    embed.add_field(name="Current Balance", value=walletinfo["final_balance"]/ 100000000, inline=False)
-    embed.set_footer(text="Made with ❤ by Leho")
+    embed.add_field(name="Current Balance", value=walletinfo["final_balance"] / 100000000, inline=False)
+    embed.set_footer(text="CryptoBot | Made with ❤ by Leho")
     await ctx.send(embed=embed)
 
 
-
 @bot.command()
-async def btcfee(ctx): # Check btc price
+async def btcfee(ctx):  # Check btc price
     embed = discord.Embed(title="Bitcoin Fee")
     btcfee_request = requests.get("https://bitcoinfees.earn.com/api/v1/fees/recommended").json()
     embed.add_field(name="Fastest", value=str(btcfee_request["fastestFee"]), inline=False)
     embed.add_field(name="Half Hour", value=str(btcfee_request["halfHourFee"]), inline=False)
     embed.add_field(name="Hour", value=str(btcfee_request["hourFee"]), inline=False)
-    embed.set_footer(text="Made with ❤ by Leho")
+    embed.set_footer(text="CryptoBot | Made with ❤ by Leho")
     await ctx.send(embed=embed)
+
 
 @bot.command()
 async def help(ctx):
     embed = discord.Embed(title="CryptoBot Help")
-    embed.add_field(name="Price - Checks A Cryptocurrency Price", value="```>price <coin> <currency>```", inline=False) # price command
-    embed.add_field(name="Ping - Checks if the coingecko API is responding", value="```>ping```", inline=False) # ping command
-    embed.add_field(name="Gas - Checks the current Ethereum gas price", value="```>gas```", inline=False) # gas command
-    embed.add_field(name="Btcwallet - Shows you info about a Bitcoin wallet", value="```>btcwallet <btc wallet address>```", inline=False)
-    embed.set_footer(text="Made with ❤ by Leho")
+    embed.add_field(name="Price - Checks A Cryptocurrency Price", value="```>price <coin> <currency>```",
+                    inline=False)  # price command
+    embed.add_field(name="Ping - Checks if the coingecko API is responding", value="```>ping```",
+                    inline=False)  # ping command
+    embed.add_field(name="Gas - Checks the current Ethereum gas price", value="```>gas```", inline=False)  # gas command
+    embed.add_field(name="Btcwallet - Shows you info about a Bitcoin wallet",
+                    value="```>btcwallet <btc wallet address>```", inline=False)
+    embed.set_footer(text="CryptoBot | Made with ❤ by Leho")
     await ctx.send(embed=embed)
+
 
 @bot.command()
 async def ltcfee(ctx):
@@ -124,12 +129,23 @@ async def ltcfee(ctx):
     lowfee = ltcfeereq["low_fee_per_kb"]
 
     embed.add_field(name="High", value="```" + str(highfee / 100000000) + " LTC/KB" + "```", inline=False)
-    embed.add_field(name="Medium", value=str(mediumfee / 100000000) + " LTC/KB", inline=False)
-    embed.add_field(name="Low", value=str(lowfee / 100000000) + " LTC/KB", inline=False)
+    embed.add_field(name="Medium", value="```" + str(mediumfee / 100000000) + " LTC/KB" + "```", inline=False)
+    embed.add_field(name="Low", value="```" + str(lowfee / 100000000) + " LTC/KB" + "```", inline=False)
+    embed.set_footer(text="CryptoBot | Made with ❤ by Leho")
     await ctx.send(embed=embed)
 
 
+async def info(ctx, arg, arg2):  # arg is the wallet type (btc or ltc) and arg2 is the wallet addy
+    argcapatalise = str(arg.capitalize())
 
+    if argcapatalise == "LTC":
+        await ctx.send("Searching for ltc wallet", delete_after=1)
+
+    elif argcapatalise == "BTC":
+        await ctx.send("Searching for btc wallet", delete_after=1)
+
+    elif argcapatalise == "ETH":
+        await ctx.send("Searching for eth wallet", delete_after=1)
 
 
 bot.run(TOKEN)
