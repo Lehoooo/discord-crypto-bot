@@ -5,7 +5,6 @@ from discord.ext import commands
 import requests
 
 TOKEN = open("token.txt", "r").read()
-etherscanapikey = open("etherscantoken.txt", "r").read()
 
 bot = commands.Bot(command_prefix='>')
 
@@ -18,12 +17,12 @@ print("\n\n\n\nStarting Crypto Bot - Made By Leho\n\n\n\n")
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(activity=discord.Game(name="Looking At Crypto Prices!"))
+    await bot.change_presence(activity=discord.Game(name="Looking At CryptoCurrency Prices! | cryptobot.party"))
     print("Ready")
 
 
 @bot.command()
-async def price(ctx, arg, arg2): # arg is crypto, arg2 is the currency
+async def price(ctx, arg, arg2='USD'): # arg is crypto, arg2 is the currency
     await ctx.send('Looking For Crypto ' + str(arg).capitalize() + '. Please Wait.', delete_after=1)
 
     coinsearch = cg.get_price(ids=arg, vs_currencies=arg2)
@@ -40,13 +39,13 @@ async def price(ctx, arg, arg2): # arg is crypto, arg2 is the currency
 @bot.command()
 async def ping(ctx):
     coinping = requests.get("http://api.coingecko.com/api/v3/ping").json()
-    ping = coinping["gecko_says"]
+    pingresult = coinping["gecko_says"]
     answer = "DOWN"
 
-    if ping == "(V3) To the Moon!":
+    if pingresult == "(V3) To the Moon!":
         answer = "UP"
 
-    print("Coingecko API Is " + answer + ". Response was: " + str(ping))
+    print("Coingecko API Is " + answer + ". Response was: " + str(pingresult))
 
     embed = discord.Embed(title="Ping Test")
     embed.add_field(name="CoinGecko", value="API Is " + str(answer), inline=False)
@@ -65,9 +64,9 @@ async def gas(ctx):
     print("Just searched for gas prices. Result was " + str(highprice) + ", " + str(mediumprice) + ", " + str(lowprice))
 
     embed = discord.Embed(title="Ethereum Gas Price")
-    embed.add_field(name="High", value=str(highprice) + " GWEI", inline=False)
-    embed.add_field(name="Medium", value=str(mediumprice) + " GWEI", inline=False)
-    embed.add_field(name="Low", value=str(lowprice) + " GWEI", inline=False)
+    embed.add_field(name="High", value="```" + str(highprice) + " GWEI" + "```", inline=False)
+    embed.add_field(name="Medium", value="```" + str(mediumprice) + " GWEI" + "```", inline=False)
+    embed.add_field(name="Low", value="```" + str(lowprice) + " GWEI" + "```", inline=False)
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
 
@@ -93,6 +92,7 @@ async def help(ctx):
     embed.add_field(name="Gas - Checks the current Ethereum gas price", value="```>gas```", inline=False)  # gas command
     embed.add_field(name="Btcwallet - Shows you info about a Bitcoin wallet",
                     value="```>btcwallet <btc wallet address>```", inline=False)
+
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
 
@@ -115,7 +115,7 @@ async def ltcfee(ctx):
 
 
 @bot.command()
-async def info(ctx, arg, arg2):  # arg is the wallet type (btc or ltc) and arg2 is the wallet addy
+async def info(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and arg2 is the wallet addy
     argcapatalise = str(arg.upper())
 
     if argcapatalise == "LTC":
@@ -139,7 +139,7 @@ async def info(ctx, arg, arg2):  # arg is the wallet type (btc or ltc) and arg2 
         await ctx.send(embed=embed)
 
     elif argcapatalise == "ETH":
-        await ctx.send("Searching for eth wallet", delete_after=1)
+        await ctx.send("Please Wait, Getting ETH Wallet Info", delete_after=1)
         ethwalletinfo = requests.get("https://api.blockcypher.com/v1/eth/main/addrs/" + str(arg2) + "/balance").json()
         embed = discord.Embed(title="Ethereum Wallet Info")
 
@@ -148,16 +148,16 @@ async def info(ctx, arg, arg2):  # arg is the wallet type (btc or ltc) and arg2 
         ethcurrentbalance = ethwalletinfo["final_balance"] / 1000000000000000000
 
         embed.add_field(name="Public Wallet Address", value="```" + str(arg2) + "```", inline=False)
-        embed.add_field(name="Number Of Transactions", value=str(ethwalletinfo["final_n_tx"]), inline=False)
-        embed.add_field(name="Total Recieved", value=str(ethtotalrecieved) + " ETH", inline=False)
-        embed.add_field(name="Total Sent", value=str(ethtotalsent) + " ETH", inline=False)
-        embed.add_field(name="Current Balance", value=str(ethcurrentbalance) + " ETH", inline=False)
+        embed.add_field(name="Number Of Transactions", value="```" + str(ethwalletinfo["final_n_tx"] + "```"), inline=False)
+        embed.add_field(name="Total Recieved", value="```" + str(ethtotalrecieved) + " ETH" + "```", inline=False)
+        embed.add_field(name="Total Sent", value="```" + str(ethtotalsent) + " ETH" + "```", inline=False)
+        embed.add_field(name="Current Balance", value="```" + str(ethcurrentbalance) + " ETH" + "```", inline=False)
         embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
         await ctx.send(embed=embed)
 
 
     else:
-        await ctx.send("Sorry, that crypto is not supported at the moment" + argcapatalise)
+        await ctx.send("Sorry, that crypto wallet is not supported at the moment")
 
 
 bot.run(TOKEN)
