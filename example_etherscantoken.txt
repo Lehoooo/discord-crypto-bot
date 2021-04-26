@@ -1,1 +1,0 @@
-PUT YOUR ETHERSCAN API KEY HERE AND RENAME TO "etherscantoken.txt"
