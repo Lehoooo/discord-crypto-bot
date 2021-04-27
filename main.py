@@ -163,11 +163,28 @@ async def info(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and 
         ethcurrentbalance = ethwalletinfo["final_balance"] / 1000000000000000000
 
         embed.add_field(name="Public Wallet Address", value="```" + str(arg2) + "```", inline=False)
-        embed.add_field(name="Number Of Transactions", value="```" + str(ethwalletinfo["final_n_tx"] + "```"),
-                        inline=False)
-        embed.add_field(name="Total Recieved", value="```" + str(ethtotalrecieved) + " ETH" + "```", inline=False)
-        embed.add_field(name="Total Sent", value="```" + str(ethtotalsent) + " ETH" + "```", inline=False)
-        embed.add_field(name="Current Balance", value="```" + str(ethcurrentbalance) + " ETH" + "```", inline=False)
+        embed.add_field(name="Number Of Transactions", value=str(ethwalletinfo["final_n_tx"]), inline=False)
+        embed.add_field(name="Total Recieved", value=str(ethtotalrecieved) + " ETH", inline=False)
+        embed.add_field(name="Total Sent", value=str(ethtotalsent) + " ETH", inline=False)
+        embed.add_field(name="Current Balance", value=str(ethcurrentbalance) + " ETH", inline=False)
+        embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
+        await ctx.send(embed=embed)
+
+
+    elif argcapatalise == "DOGECOIN" or argcapatalise == "DOGE":
+        await ctx.send("Please Wait, Getting Dogecoin Wallet Info", delete_after=1)
+        embed = discord.Embed(title="Dogecoin Wallet Info")
+        btcwalletinfo = requests.get("https://api.blockcypher.com/v1/doge/main/addrs/" + str(arg2) + "/balance").json()
+
+        totalrecieved = btcwalletinfo["total_received"] / 100000000
+        totalsent = btcwalletinfo["total_sent"] / 100000000
+        currentbalance = btcwalletinfo["final_balance"] / 100000000
+
+        embed.add_field(name="Public Wallet Address", value="```" + str(arg2) + "```", inline=False)
+        embed.add_field(name="Number Of Transactions", value=str(btcwalletinfo["final_n_tx"]), inline=False)
+        embed.add_field(name="Total Recieved", value=str(totalrecieved) + " DOGE", inline=False)
+        embed.add_field(name="Total Sent", value=str(totalsent) + " DOGE", inline=False)
+        embed.add_field(name="Current Balance", value=str(currentbalance) + " DOGE", inline=False)
         embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
         await ctx.send(embed=embed)
 
