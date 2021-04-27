@@ -22,7 +22,7 @@ async def on_ready():
 
 
 @bot.command()
-async def price(ctx, arg, arg2='USD'): # arg is crypto, arg2 is the currency
+async def price(ctx, arg, arg2='USD'):  # arg is crypto, arg2 is the currency
     await ctx.send('Looking For Crypto ' + str(arg).capitalize() + '. Please Wait.', delete_after=1)
 
     coinsearch = cg.get_price(ids=arg, vs_currencies=arg2)
@@ -119,19 +119,34 @@ async def info(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and 
     argcapatalise = str(arg.upper())
 
     if argcapatalise == "LTC":
-        await ctx.send("Searching for ltc wallet" + arg2, delete_after=1)
+        await ctx.send("Please Wait, Getting LTC Wallet Info", delete_after=1)
+        embed = discord.Embed(title="Litecoin Wallet Info")
+        btcwalletinfo = requests.get("https://api.blockcypher.com/v1/ltc/main/addrs/" + str(arg2) + "/balance").json()
+
+        totalrecieved = btcwalletinfo["total_received"] / 100000000
+        totalsent = btcwalletinfo["total_sent"] / 100000000
+        currentbalance = btcwalletinfo["final_balance"] / 100000000
+
+        embed.add_field(name="Public Wallet Address", value="```" + str(arg2) + "```", inline=False)
+        embed.add_field(name="Number Of Transactions", value=str(btcwalletinfo["final_n_tx"]), inline=False)
+        embed.add_field(name="Total Recieved", value=str(totalrecieved) + " LTC", inline=False)
+        embed.add_field(name="Total Sent", value=str(totalsent) + " LTC", inline=False)
+        embed.add_field(name="Current Balance", value=str(currentbalance) + " LTC", inline=False)
+        embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
+        await ctx.send(embed=embed)
+
 
     elif argcapatalise == "BTC":
         await ctx.send("Please Wait, Getting BTC Wallet Info", delete_after=1)
         embed = discord.Embed(title="Bitcoin Wallet Info")
-        walletinfo = requests.get("https://blockchain.info/rawaddr/" + str(arg2)).json()
+        btcwalletinfo = requests.get("https://api.blockcypher.com/v1/btc/main/addrs/" + str(arg2) + "/balance").json()
 
-        totalrecieved = walletinfo["total_received"] / 100000000
-        totalsent = walletinfo["total_sent"] / 100000000
-        currentbalance = walletinfo["final_balance"] / 100000000
+        totalrecieved = btcwalletinfo["total_received"] / 100000000
+        totalsent = btcwalletinfo["total_sent"] / 100000000
+        currentbalance = btcwalletinfo["final_balance"] / 100000000
 
         embed.add_field(name="Public Wallet Address", value="```" + str(arg2) + "```", inline=False)
-        embed.add_field(name="Number Of Transactions", value=str(walletinfo["n_tx"]), inline=False)
+        embed.add_field(name="Number Of Transactions", value=str(btcwalletinfo["final_n_tx"]), inline=False)
         embed.add_field(name="Total Recieved", value=str(totalrecieved) + " BTC", inline=False)
         embed.add_field(name="Total Sent", value=str(totalsent) + " BTC", inline=False)
         embed.add_field(name="Current Balance", value=str(currentbalance) + " BTC", inline=False)
@@ -148,13 +163,13 @@ async def info(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and 
         ethcurrentbalance = ethwalletinfo["final_balance"] / 1000000000000000000
 
         embed.add_field(name="Public Wallet Address", value="```" + str(arg2) + "```", inline=False)
-        embed.add_field(name="Number Of Transactions", value="```" + str(ethwalletinfo["final_n_tx"] + "```"), inline=False)
+        embed.add_field(name="Number Of Transactions", value="```" + str(ethwalletinfo["final_n_tx"] + "```"),
+                        inline=False)
         embed.add_field(name="Total Recieved", value="```" + str(ethtotalrecieved) + " ETH" + "```", inline=False)
         embed.add_field(name="Total Sent", value="```" + str(ethtotalsent) + " ETH" + "```", inline=False)
         embed.add_field(name="Current Balance", value="```" + str(ethcurrentbalance) + " ETH" + "```", inline=False)
         embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
         await ctx.send(embed=embed)
-
 
     else:
         await ctx.send("Sorry, that crypto wallet is not supported at the moment")
