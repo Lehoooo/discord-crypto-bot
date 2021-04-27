@@ -85,13 +85,17 @@ async def btcfee(ctx):  # Check btc price
 @bot.command()
 async def help(ctx):
     embed = discord.Embed(title="CryptoBot Help")
-    embed.add_field(name="Price - Checks A Cryptocurrency Price", value="```>price <coin> <currency>```",
-                    inline=False)  # price command
-    embed.add_field(name="Ping - Checks if the coingecko API is responding", value="```>ping```",
+    embed.add_field(name="Price - Checks A Cryptocurrency Price", value="```>price <coin> <currency (default is "
+                                                                        "USD)>```", inline=False)  # price command
+    embed.add_field(name="Ping - Checks If The Coingecko API Is Responding", value="```>ping```",
                     inline=False)  # ping command
-    embed.add_field(name="Gas - Checks the current Ethereum gas price", value="```>gas```", inline=False)  # gas command
-    embed.add_field(name="Btcwallet - Shows you info about a Bitcoin wallet",
-                    value="```>btcwallet <btc wallet address>```", inline=False)
+    embed.add_field(name="Gas - Checks The Current Ethereum Gas Price", value="```>gas```", inline=False)  # gas command
+    embed.add_field(name="Btcfee - Checks The Current Bitcoin Transfer fee", value="```>btcfee```", inline=False) # btc fee command
+    embed.add_field(name="Ltcfee - Checks The Current Litecoin Transfer fee", value="```>ltcfee```", inline=False) # ltc fee command
+    embed.add_field(name="Info - Shows Info About A Crypto Wallet - Supported Wallet Types: btc, doge, eth, ltc",
+                    value="```>info <wallet type> <wallet address>```", inline=False) # wallet info command
+    embed.add_field(name="Invite - Sends The Bot Invite Link", value="```>invite```", inline=False)
+    embed.add_field(name="", value="", inline=False)
 
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
@@ -113,12 +117,19 @@ async def ltcfee(ctx):
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
 
+@bot.command()
+async def invite(ctx):
+    embed = discord.Embed()
+    embed.add_field(name="Invite Link", value="[Click Here!](https://discord.com/api/oauth2/authorize?client_id=828195695126380564&permissions=67611712&scope=bot)")
+    embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
+    await ctx.send(embed=embed)
+
 
 @bot.command()
 async def info(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and arg2 is the wallet addy
     argcapatalise = str(arg.upper())
 
-    if argcapatalise == "LTC":
+    if argcapatalise == "LTC" or argcapatalise == "LITECOIN":
         await ctx.send("Please Wait, Getting LTC Wallet Info", delete_after=1)
         embed = discord.Embed(title="Litecoin Wallet Info")
         btcwalletinfo = requests.get("https://api.blockcypher.com/v1/ltc/main/addrs/" + str(arg2) + "/balance").json()
@@ -136,7 +147,7 @@ async def info(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and 
         await ctx.send(embed=embed)
 
 
-    elif argcapatalise == "BTC":
+    elif argcapatalise == "BTC" or argcapatalise == "BITCOIN":
         await ctx.send("Please Wait, Getting BTC Wallet Info", delete_after=1)
         embed = discord.Embed(title="Bitcoin Wallet Info")
         btcwalletinfo = requests.get("https://api.blockcypher.com/v1/btc/main/addrs/" + str(arg2) + "/balance").json()
@@ -153,7 +164,7 @@ async def info(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and 
         embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
         await ctx.send(embed=embed)
 
-    elif argcapatalise == "ETH":
+    elif argcapatalise == "ETH" or argcapatalise == "ETHEREUM":
         await ctx.send("Please Wait, Getting ETH Wallet Info", delete_after=1)
         ethwalletinfo = requests.get("https://api.blockcypher.com/v1/eth/main/addrs/" + str(arg2) + "/balance").json()
         embed = discord.Embed(title="Ethereum Wallet Info")
@@ -189,7 +200,7 @@ async def info(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and 
         await ctx.send(embed=embed)
 
     else:
-        await ctx.send("Sorry, that crypto wallet is not supported at the moment")
+        await ctx.send("Sorry, " + str(argcapatalise) + " is not supported, Or you might have spelt it wrong :)", delete_after=2)
 
 
 bot.run(TOKEN)
