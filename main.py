@@ -2,6 +2,7 @@
 from pycoingecko import CoinGeckoAPI
 import discord
 from discord.ext import commands
+from discord.ext import tasks
 import requests
 
 TOKEN = open("token.txt", "r").read()
@@ -90,10 +91,12 @@ async def help(ctx):
     embed.add_field(name="Ping - Checks If The Coingecko API Is Responding", value="```>ping```",
                     inline=False)  # ping command
     embed.add_field(name="Gas - Checks The Current Ethereum Gas Price", value="```>gas```", inline=False)  # gas command
-    embed.add_field(name="Btcfee - Checks The Current Bitcoin Transfer fee", value="```>btcfee```", inline=False) # btc fee command
-    embed.add_field(name="Ltcfee - Checks The Current Litecoin Transfer fee", value="```>ltcfee```", inline=False) # ltc fee command
+    embed.add_field(name="Btcfee - Checks The Current Bitcoin Transfer fee", value="```>btcfee```",
+                    inline=False)  # btc fee command
+    embed.add_field(name="Ltcfee - Checks The Current Litecoin Transfer fee", value="```>ltcfee```",
+                    inline=False)  # ltc fee command
     embed.add_field(name="Info - Shows Info About A Crypto Wallet - Supported Wallet Types: btc, doge, eth, ltc",
-                    value="```>info <wallet type> <wallet address>```", inline=False) # wallet info command
+                    value="```>info <wallet type> <wallet address>```", inline=False)  # wallet info command
     embed.add_field(name="Invite - Sends The Bot Invite Link", value="```>invite```", inline=False)
     embed.add_field(name="", value="", inline=False)
 
@@ -117,10 +120,12 @@ async def ltcfee(ctx):
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
 
+
 @bot.command()
 async def invite(ctx):
     embed = discord.Embed()
-    embed.add_field(name="Invite Link", value="[Click Here!](https://discord.com/api/oauth2/authorize?client_id=828195695126380564&permissions=67611712&scope=bot)")
+    embed.add_field(name="Invite Link",
+                    value="[Click Here!](https://discord.com/api/oauth2/authorize?client_id=828195695126380564&permissions=67611712&scope=bot)")
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
 
@@ -181,7 +186,6 @@ async def info(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and 
         embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
         await ctx.send(embed=embed)
 
-
     elif argcapatalise == "DOGECOIN" or argcapatalise == "DOGE":
         await ctx.send("Please Wait, Getting Dogecoin Wallet Info", delete_after=1)
         embed = discord.Embed(title="Dogecoin Wallet Info")
@@ -200,7 +204,15 @@ async def info(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and 
         await ctx.send(embed=embed)
 
     else:
-        await ctx.send("Sorry, " + str(argcapatalise) + " is not supported, Or you might have spelt it wrong :)", delete_after=2)
+        await ctx.send("Sorry, " + str(argcapatalise) + " is not supported, Or you might have spelt it wrong :)",
+                       delete_after=2)
+
+
+@bot.event
+async def on_command_error(ctx, error):
+    embed = discord.Embed(color=0xfb0021)
+    embed.add_field(name="Error", value="There was an error excecuting the command.", inline=False)
+    await ctx.send(embed=embed)
 
 
 bot.run(TOKEN)
