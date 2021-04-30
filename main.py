@@ -29,7 +29,7 @@ async def price(ctx, arg, arg2='USD'):  # arg is crypto, arg2 is the currency
     coinsearch = cg.get_price(ids=arg, vs_currencies=arg2)
     usdprice = coinsearch[str(arg).lower()][str(arg2).lower()]
 
-    print("Just Looked For " + str(arg) + ". Got response " + str(usdprice) + " USD")
+    print("Just Looked For " + str(arg) + ". Got response " + str(usdprice) + " " + str(arg2))
 
     embed = discord.Embed(title=str(arg).capitalize() + " - " + str(arg2).upper())
     embed.add_field(name="Price:", value="```" + "$" + str(usdprice) + " " + str(arg2).upper() + "```", inline=False)
