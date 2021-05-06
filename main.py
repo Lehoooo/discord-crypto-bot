@@ -5,13 +5,10 @@ from discord.ext import commands
 from discord.ext import tasks
 import requests
 
-TOKEN = open("token.txt", "r").read()
-
+TOKEN = open("token.txt", "r").read()  # loads the token file
 bot = commands.Bot(command_prefix='>')
-
 cg = CoinGeckoAPI()
-
-bot.remove_command('help')
+bot.remove_command('help')  # make our help command work
 
 print("\n\n\n\nStarting Crypto Bot - Made By Leho\n\n\n\n")
 
@@ -214,7 +211,6 @@ async def on_command_error(ctx, error):
     embed.add_field(name="Error", value=str(error), inline=False)
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
-
 
 
 bot.run(TOKEN)
