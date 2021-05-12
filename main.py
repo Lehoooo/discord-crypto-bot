@@ -27,8 +27,7 @@ print("\n\n\n\nStarting Crypto Bot - Made By Leho\n\n\n\n")
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Looking At CryptoCurrency Prices! | cryptobot.party"))
-    print(bot.user.name)
-    print(bot.user.bot)
+    print("Logged in as: " + bot.user.name + "#" + bot.user.discriminator)
     print("Ready")
 
 
