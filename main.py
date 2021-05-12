@@ -215,6 +215,13 @@ async def wallet(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) an
         await ctx.send("Sorry, " + str(argcapatalise) + " is not supported, Or you might have spelt it wrong :)",
                        delete_after=2)
 
+@bot.command()
+async def info(ctx, arg):
+    coininfo = requests.get("https://api.coingecko.com/api/v3/coins/" + str(arg)).json()
+    embed = discord.Embed(title=coininfo["name"])
+    embed.add_field(name="Description", value=coininfo["description"]["en"])
+    await ctx.send(embed=embed)
+
 
 @bot.event
 async def on_command_error(ctx, error):
