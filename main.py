@@ -103,7 +103,7 @@ async def help(ctx):
                     inline=False)  # btc fee command
     embed.add_field(name="Ltcfee - Checks The Current Litecoin Transfer fee", value="```>ltcfee```",
                     inline=False)  # ltc fee command
-    embed.add_field(name="Info - Shows Info About A Crypto Wallet - Supported Wallet Types: btc, doge, eth, ltc",
+    embed.add_field(name="Wallet - Shows Info About A Crypto Wallet - Supported Wallet Types: btc, doge, eth, ltc",
                     value="```>info <wallet type> <wallet address>```", inline=False)  # wallet info command
     embed.add_field(name="Invite - Sends The Bot Invite Link", value="```>invite```", inline=False)
 
@@ -138,7 +138,7 @@ async def invite(ctx):
 
 
 @bot.command()
-async def info(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and arg2 is the wallet addy
+async def wallet(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and arg2 is the wallet addy
     argcapatalise = str(arg.upper())
 
     if argcapatalise == "LTC" or argcapatalise == "LITECOIN":
@@ -218,7 +218,8 @@ async def info(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) and 
 @bot.event
 async def on_command_error(ctx, error):
     embed = discord.Embed(color=0xfb0021)
-    embed.add_field(name="Error", value=str(error), inline=False)
+    embed.add_field(name="Error", value=str(error + "\n Please Check >help"), inline=False)
+
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
 
