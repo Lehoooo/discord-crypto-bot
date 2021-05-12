@@ -10,7 +10,13 @@ Note: THIS IS A WORK IN PROGRESS
 
 Discord.py
 Requests
+Os
 
 # Installation
 
-Run ```pip3 install discord.py requests```
+Run ```pip3 install -r requirements.txt```
+
+
+# Usage
+
+Either put your token into the environment variable BOT_TOKEN, or turn debug mode to True and it will load from token.txt
