@@ -106,7 +106,6 @@ async def help(ctx):
     embed.add_field(name="Info - Shows Info About A Crypto Wallet - Supported Wallet Types: btc, doge, eth, ltc",
                     value="```>info <wallet type> <wallet address>```", inline=False)  # wallet info command
     embed.add_field(name="Invite - Sends The Bot Invite Link", value="```>invite```", inline=False)
-    embed.add_field(name="", value="", inline=False)
 
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
