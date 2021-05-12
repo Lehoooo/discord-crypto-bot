@@ -4,11 +4,22 @@ import discord
 from discord.ext import commands
 from discord.ext import tasks
 import requests
+import os
 
-TOKEN = open("token.txt", "r").read()  # loads the token file
+debugmode = False
+
+if debugmode:
+    print("Debug mode is enabled, loading token from txt")
+    TOKEN = open("token.txt", "r").read()  # loads the token file
+else:
+    print("Debug mode is disabled, loading token from env variables")
+    TOKEN = os.environ["BOT_TOKEN"]
+
 bot = commands.Bot(command_prefix='>')
 cg = CoinGeckoAPI()
 bot.remove_command('help')  # make our help command work
+
+
 
 print("\n\n\n\nStarting Crypto Bot - Made By Leho\n\n\n\n")
 
