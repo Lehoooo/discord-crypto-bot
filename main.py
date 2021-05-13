@@ -1,5 +1,4 @@
 # Made By github.com/Lehoooo
-from pycoingecko import CoinGeckoAPI
 import discord
 from discord.ext import commands
 from discord.ext import tasks
@@ -16,7 +15,6 @@ else:
     TOKEN = os.environ["BOT_TOKEN"]
 
 bot = commands.Bot(command_prefix='>')
-cg = CoinGeckoAPI()
 bot.remove_command('help')  # make our help command work
 
 
@@ -31,20 +29,6 @@ async def on_ready():
     print("Ready")
 
 
-# @bot.command()
-# async def price(ctx, arg, arg2='USD'):  # arg is crypto, arg2 is the currency
-#     await ctx.send('Looking For Crypto ' + str(arg).capitalize() + '. Please Wait.', delete_after=1)
-#
-#     coinsearch = cg.get_price(ids=arg, vs_currencies=arg2)
-#     usdprice = coinsearch[str(arg).lower()][str(arg2).lower()]
-#
-#     print("Just Looked For " + str(arg) + ". Got response " + str(usdprice) + " " + str(arg2))
-#
-#     embed = discord.Embed(title=str(arg).capitalize() + " - " + str(arg2).upper())
-#     embed.add_field(name="Price:", value="```" + "$" + str(usdprice) + " " + str(arg2).upper() + "```", inline=False)
-#     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
-#     await ctx.send(embed=embed)
-
 @bot.command()
 async def price(ctx, arg, arg2='USD'): # arg is crypto, arg2 is the currency
     await ctx.send("Getting Price For " + str(arg).capitalize() + ". Please Wait.", delete_after=1)
@@ -53,6 +37,7 @@ async def price(ctx, arg, arg2='USD'): # arg is crypto, arg2 is the currency
     embed = discord.Embed(title=str(arg).capitalize() + " - " + str(arg2).upper())
     embed.add_field(name="Price:", value="```" + "$" + str(pricesearch["litecoin"]["usd"]) + "```", inline=False)
     embed.add_field(name="24H Change:", value="```" + str(pricesearch["litecoin"]["usd_24h_change"]) + "```", inline=False)
+    embed.add_field(name="Updated At:", value="```" + "" + "```")
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
 
