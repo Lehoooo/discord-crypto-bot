@@ -215,16 +215,6 @@ async def wallet(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) an
         await ctx.send("Sorry, " + str(argcapatalise) + " is not supported, Or you might have spelt it wrong :)",
                        delete_after=2)
 
-@bot.command()
-async def info(ctx, arg):
-    coininfo = requests.get("https://api.coingecko.com/api/v3/coins/" + str(arg)).json()
-    embed = discord.Embed(title=coininfo["name"])
-    embed.add_field(name="Block Time", value=coininfo["block_time_in_minutes"], inline=False)
-    embed.add_field(name="Hashing Algorithm", value=coininfo["hashing_algorithm"], inline=False)
-    embed.add_field(name="Homepage", value=coininfo["links"]["homepage"], inline=False)
-    embed.add_field(name="Coingecko Rank", value=coininfo["coingecko_rank"], inline=False)
-
-    await ctx.send(embed=embed)
 
 
 @bot.event
