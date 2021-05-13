@@ -220,7 +220,7 @@ async def wallet(ctx, arg, arg2):  # arg is the wallet type (btc, ltc or eth) an
 @bot.event
 async def on_command_error(ctx, error):
     embed = discord.Embed(color=0xfb0021)
-    embed.add_field(name="Error", value=str(error) + "\n \n Please Check >help", inline=False)
+    embed.add_field(name="Error", value="```" + str(error) + "```" + "\n \n Please Check >help", inline=False)
 
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
