@@ -4,6 +4,7 @@ from discord.ext import commands
 from discord.ext import tasks
 import requests
 import os
+from datetime import datetime
 
 debugmode = False
 
@@ -34,10 +35,13 @@ async def price(ctx, arg, arg2='USD'): # arg is crypto, arg2 is the currency
     await ctx.send("Getting Price For " + str(arg).capitalize() + ". Please Wait.", delete_after=1)
 
     pricesearch = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=" + str(arg).lower() + "&vs_currencies=" + str(arg2).lower() + "&include_24hr_change=true&include_last_updated_at=true").json()
+
+    converted = datetime.utcfromtimestamp(str(pricesearch[str(arg.lower())]["last_updated_at"])).strftime('%Y-%m-%d %H:%M:%S')
+
     embed = discord.Embed(title=str(arg).capitalize() + " - " + str(arg2).upper())
     embed.add_field(name="Price:", value="```" + "$" + str(pricesearch[str(arg.lower())]["usd"]) + "```", inline=False)
     embed.add_field(name="24H Change:", value="```" + str(pricesearch[str(arg.lower())]["usd_24h_change"]) + "```", inline=False)
-    embed.add_field(name="Updated At:", value="```" + str(pricesearch[str(arg.lower())]["last_updated_at"]) + "```", inline=False)
+    embed.add_field(name="Updated At:", value="```" + str(converted) + "```", inline=False)
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
     await ctx.send(embed=embed)
 
