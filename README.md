@@ -19,4 +19,7 @@ Run ```pip3 install -r requirements.txt```
 
 # Usage
 
-Either put your token into the environment variable BOT_TOKEN, or turn debug mode to True and it will load from token.txt
+1. Clone this repo
+2. Either put your token into the environment variable BOT_TOKEN, or turn debug mode to True and it will load from token.txt
+3. Then run ```python3 main.py```
+
