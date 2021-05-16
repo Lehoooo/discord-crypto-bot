@@ -27,6 +27,5 @@ Run ```pip3 install -r requirements.txt```
 # Deploy To Heroku
 Click the button below:
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Lehoooo/discord-crypto-bot)
 
