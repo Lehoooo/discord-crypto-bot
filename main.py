@@ -40,8 +40,8 @@ async def price(ctx, arg, arg2='USD'):  # arg is crypto, arg2 is the currency
         '%d-%m-%Y %H:%M:%S')
 
     embed = discord.Embed(title=str(arg).capitalize() + " - " + str(arg2).upper())
-    embed.add_field(name="Price:", value="```" + "$" + str(pricesearch[str(arg.lower())]["usd"]) + "```", inline=False)
-    embed.add_field(name="24H Change:", value="```" + str(pricesearch[str(arg.lower())]["usd_24h_change"]) + "```",
+    embed.add_field(name="Price:", value="```" + "$" + str(pricesearch[str(arg.lower())][str(arg2.upper())]) + "```", inline=False)
+    embed.add_field(name="24H Change:", value="```" + str(pricesearch[str(arg.lower())][str(arg2.upper()) + "_24h_change"]) + "```",
                     inline=False)
     embed.add_field(name="Updated At:", value="```" + str(converted) + "```", inline=False)
     embed.set_footer(text="CryptoBot | Made with ❤ by Leho | cryptobot.party")
