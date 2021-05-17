@@ -34,7 +34,7 @@ async def price(ctx, arg, arg2='USD'):  # arg is crypto, arg2 is the currency
 
     pricesearch = requests.get(
         "https://api.coingecko.com/api/v3/simple/price?ids=" + str(arg).lower() + "&vs_currencies=" + str(
-            arg2).lower() + "&include_24hr_change=true&include_last_updated_at=true").json()
+            arg2).upper() + "&include_24hr_change=true&include_last_updated_at=true").json()
 
     converted = datetime.utcfromtimestamp(int(pricesearch[str(arg.lower())]["last_updated_at"])).strftime(
         '%d-%m-%Y %H:%M:%S')
