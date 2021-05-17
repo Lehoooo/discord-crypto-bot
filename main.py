@@ -6,7 +6,7 @@ import requests
 import os
 from datetime import datetime
 
-debugmode = True
+debugmode = False
 
 if debugmode:
     print("Debug mode is enabled, loading token from txt")
